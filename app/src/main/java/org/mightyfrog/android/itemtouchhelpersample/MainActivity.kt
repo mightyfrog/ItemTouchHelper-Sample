@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         fun remove(pos: Int) {
-            list.remove(pos)
+            list.removeAt(pos)
             notifyItemRemoved(pos)
         }
 
