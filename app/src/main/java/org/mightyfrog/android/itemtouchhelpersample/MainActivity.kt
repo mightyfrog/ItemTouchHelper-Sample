@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 /**
@@ -21,30 +22,34 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val rv = findViewById<RecyclerView>(R.id.recyclerView)
-        rv.layoutManager = LinearLayoutManager(this)
-        rv.adapter = TestAdapter()
-        rv.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        findViewById<RecyclerView>(R.id.recyclerView).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = TestAdapter()
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            createItemTouchHelper().attachToRecyclerView(this)
+        }
+    }
 
+    private fun createItemTouchHelper(): ItemTouchHelper {
         val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END
         val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
-        val helper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(dragFlags, swipeFlags) {
+        return ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(dragFlags, swipeFlags) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                val fromPos = viewHolder.adapterPosition
-                val toPos = target.adapterPosition
-                (rv.adapter as TestAdapter).swap(fromPos, toPos)
+                val from = viewHolder.adapterPosition
+                val to = target.adapterPosition
+                (recyclerView.adapter as TestAdapter).swap(from, to)
 
                 return true
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                (rv.adapter as TestAdapter).remove(viewHolder.adapterPosition)
+                (recyclerView.adapter as TestAdapter).remove(viewHolder.adapterPosition)
             }
         })
-        helper.attachToRecyclerView(rv)
     }
 
     class TestAdapter : RecyclerView.Adapter<TestItemView>() {
+
         private val list: ArrayList<Int> = ArrayList()
 
         init {
@@ -70,7 +75,6 @@ class MainActivity : AppCompatActivity() {
             list.removeAt(pos)
             notifyItemRemoved(pos)
         }
-
     }
 
     class TestItemView(view: View) : RecyclerView.ViewHolder(view) {
