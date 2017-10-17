@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private fun createItemTouchHelper(): ItemTouchHelper {
         val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END
         val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+
         return ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(dragFlags, swipeFlags) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                 val from = viewHolder.adapterPosition
@@ -56,6 +57,8 @@ class MainActivity : AppCompatActivity() {
             list += 1..100
         }
 
+        override fun getItemCount() = list.size
+
         override fun onBindViewHolder(holder: TestItemView?, position: Int) {
             holder?.tv?.text = list[position].toString()
         }
@@ -63,8 +66,6 @@ class MainActivity : AppCompatActivity() {
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TestItemView {
             return TestItemView(LayoutInflater.from(parent?.context).inflate(R.layout.vh, parent, false))
         }
-
-        override fun getItemCount() = list.size
 
         fun swap(from: Int, to: Int) {
             Collections.swap(list, from, to)
