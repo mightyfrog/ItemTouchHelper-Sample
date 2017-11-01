@@ -51,11 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     class TestAdapter : RecyclerView.Adapter<TestItemView>() {
 
-        private val list: ArrayList<Int> = ArrayList()
-
-        init {
-            list += 1..100
-        }
+        private val list: MutableList<Int> = (1..100).toMutableList()
 
         override fun getItemCount() = list.size
 
