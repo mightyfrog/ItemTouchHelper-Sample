@@ -54,13 +54,12 @@ class MainActivity : AppCompatActivity() {
         private val list: MutableList<Int> = (1..100).toMutableList()
 
         override fun getItemCount() = list.size
-
-        override fun onBindViewHolder(holder: TestItemView?, position: Int) {
-            holder?.tv?.text = list[position].toString()
+        override fun onBindViewHolder(holder: TestItemView, position: Int) {
+            holder.tv.text = list[position].toString()
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TestItemView {
-            return TestItemView(LayoutInflater.from(parent?.context).inflate(R.layout.vh, parent, false))
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TestItemView {
+            return TestItemView(LayoutInflater.from(parent.context).inflate(R.layout.vh, parent, false))
         }
 
         fun swap(from: Int, to: Int) {
