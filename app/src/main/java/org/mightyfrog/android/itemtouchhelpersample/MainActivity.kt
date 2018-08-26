@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         private val list: MutableList<Int> = (1..100).toMutableList()
 
         override fun getItemCount() = list.size
+
         override fun onBindViewHolder(holder: TestItemView, position: Int) {
             holder.tv.text = list[position].toString()
         }
